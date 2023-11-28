@@ -33,6 +33,7 @@ async function run() {
     const reviewsCollection = client.db("hosteldb").collection("reviews");
     const pricingCollection = client.db("hosteldb").collection("pricing");
     const addMealCollection = client.db("hosteldb").collection("addMeal");
+    const requestMealCollection = client.db("hosteldb").collection("request");
 
     //meals collection
 
@@ -42,7 +43,7 @@ async function run() {
     });
 
     app.get("/meals/:id", async (req, res) => {
-      const id = req.params;
+      const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await mealsCollection.findOne(query);
       res.send(result);
@@ -65,6 +66,19 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await pricingCollection.findOne(query);
+      res.send(result);
+    });
+
+    //request meals post
+    app.post("/request", async (req, res) => {
+      const requestMeal = req.body;
+      const result = await requestMealCollection.insertOne(requestMeal);
+      res.send(result);
+    });
+
+    //request data get sort
+    app.get("/request", async (req, res) => {
+      const result = await requestMealCollection.find().toArray();
       res.send(result);
     });
 
