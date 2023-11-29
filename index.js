@@ -34,9 +34,9 @@ async function run() {
     const pricingCollection = client.db("hosteldb").collection("pricing");
     const addMealCollection = client.db("hosteldb").collection("addMeal");
     const requestMealCollection = client.db("hosteldb").collection("request");
+    const userCollection = client.db("hosteldb").collection("user");
 
     //meals collection
-
     app.get("/meals", async (req, res) => {
       const result = await mealsCollection.find().toArray();
       res.send(result);
@@ -75,6 +75,13 @@ async function run() {
       const result = await requestMealCollection.insertOne(requestMeal);
       res.send(result);
     });
+    //request meal delete
+    app.delete("/request/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await requestMealCollection.deleteOne(query);
+      res.send(result);
+    });
 
     //request data get sort
     app.get("/request", async (req, res) => {
@@ -98,16 +105,37 @@ async function run() {
       res.send(result);
     });
 
-    // app.get("/meal", async (req, res) => {
-    //   const result = await mealsCollection.find().toArray();
-    //   res.send(result);
-    // });
+    app.get("/meal", async (req, res) => {
+      const result = await mealsCollection.find().toArray();
+      res.send(result);
+    });
 
-    //meal updated
+    //meal get id
     app.get("/meal/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await mealsCollection.findOne(query);
+      res.send(result);
+    });
+    //meal updated
+    app.put("/meal/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const item = req.body;
+
+      const updatedDoc = {
+        $set: {
+          name: item.name,
+          email: item.email,
+          title: item.title,
+          photo: item.photo,
+          like: item.like,
+          review: item.review,
+        },
+      };
+
+      const result = await mealsCollection.findOne(filter, updatedDoc, options);
       res.send(result);
     });
 
@@ -116,6 +144,24 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await mealsCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    // user related api
+
+    app.get("/users", async (req, res) => {
+      const result = await userCollection.find().toArray();
+      res.send(result);
+    });
+
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const query = { email: user.email };
+      const existingUser = await userCollection.findOne(query);
+      if (existingUser) {
+        return res.send({ message: "user already exits", insertedId: null });
+      }
+      const result = await userCollection.insertOne(newUser);
       res.send(result);
     });
 
