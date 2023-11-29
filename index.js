@@ -35,6 +35,7 @@ async function run() {
     const addMealCollection = client.db("hosteldb").collection("addMeal");
     const requestMealCollection = client.db("hosteldb").collection("request");
     const userCollection = client.db("hosteldb").collection("user");
+    const upcomingCollection = client.db("hosteldb").collection("upcoming");
 
     //meals collection
     app.get("/meals", async (req, res) => {
@@ -52,6 +53,12 @@ async function run() {
 
     app.get("/reviews", async (req, res) => {
       const result = await reviewsCollection.find().toArray();
+      res.send(result);
+    });
+    app.get("/reviews/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await reviewsCollection.findOne(query);
       res.send(result);
     });
 
@@ -75,6 +82,19 @@ async function run() {
       const result = await requestMealCollection.insertOne(requestMeal);
       res.send(result);
     });
+
+    //request meal e email diye get
+    //my job data get emaill
+    app.get("/request", async (req, res) => {
+      console.log(req.query.email);
+      let query = {};
+      if (req.query?.email) {
+        query = { email: req.query.email };
+      }
+      const result = await requestMealCollection.find(query).toArray();
+      res.send(result);
+    });
+
     //request meal delete
     app.delete("/request/:id", async (req, res) => {
       const id = req.params.id;
@@ -94,6 +114,12 @@ async function run() {
     app.post("/meals", async (req, res) => {
       const newAddMeal = req.body;
       const result = await addMealCollection.insertOne(newAddMeal);
+      res.send(result);
+    });
+
+    app.post("/upcomingmeals", async (req, res) => {
+      const newUpcomingMeal = req.body;
+      const result = await upcomingCollection.insertOne(newUpcomingMeal);
       res.send(result);
     });
 
@@ -134,8 +160,11 @@ async function run() {
           review: item.review,
         },
       };
-
-      const result = await mealsCollection.findOne(filter, updatedDoc, options);
+      const result = await mealsCollection.updateOne(
+        filter,
+        updatedDoc,
+        options
+      );
       res.send(result);
     });
 
