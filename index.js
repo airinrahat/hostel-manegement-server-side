@@ -29,7 +29,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
 
-    const mealsCollection = client.db("hosteldb").collection("meals");
+    // const mealsCollection = client.db("hosteldb").collection("meals");
     const reviewsCollection = client.db("hosteldb").collection("reviews");
     const pricingCollection = client.db("hosteldb").collection("pricing");
     const addMealCollection = client.db("hosteldb").collection("addMeal");
