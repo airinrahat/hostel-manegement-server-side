@@ -78,11 +78,11 @@ async function run() {
     });
 
     //request meals post
-    // app.post("/request", async (req, res) => {
-    //   const requestMeal = req.body;
-    //   const result = await requestMealCollection.insertOne(requestMeal);
-    //   res.send(result);
-    // });
+    app.post("/request", async (req, res) => {
+      const requestMeal = req.body;
+      const result = await requestMealCollection.insertOne(requestMeal);
+      res.send(result);
+    });
 
     //request meal e email diye get
     app.get("/request", async (req, res) => {
