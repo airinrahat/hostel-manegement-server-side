@@ -85,7 +85,6 @@ async function run() {
     });
 
     //request meal e email diye get
-    //my job data get emaill
     app.get("/request", async (req, res) => {
       console.log(req.query.email);
       let query = {};
@@ -105,7 +104,7 @@ async function run() {
     });
 
     //request data get sort
-    app.get("/request", async (req, res) => {
+    app.get("/requestedallmeals", async (req, res) => {
       const result = await requestMealCollection.find().toArray();
       res.send(result);
     });
