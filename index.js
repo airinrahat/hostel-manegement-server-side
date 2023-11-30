@@ -30,12 +30,12 @@ async function run() {
     // await client.connect();
 
     // const mealsCollection = client.db("hosteldb").collection("meals");
-    const reviewsCollection = client.db("hosteldb").collection("reviews");
-    const pricingCollection = client.db("hosteldb").collection("pricing");
-    const addMealCollection = client.db("hosteldb").collection("addMeal");
-    const requestMealCollection = client.db("hosteldb").collection("request");
-    const userCollection = client.db("hosteldb").collection("user");
-    const upcomingCollection = client.db("hosteldb").collection("upcoming");
+    // const reviewsCollection = client.db("hosteldb").collection("reviews");
+    // const pricingCollection = client.db("hosteldb").collection("pricing");
+    // const addMealCollection = client.db("hosteldb").collection("addMeal");
+    // const requestMealCollection = client.db("hosteldb").collection("request");
+    // const userCollection = client.db("hosteldb").collection("user");
+    // const upcomingCollection = client.db("hosteldb").collection("upcoming");
 
     //meals collection
     app.get("/meals", async (req, res) => {
